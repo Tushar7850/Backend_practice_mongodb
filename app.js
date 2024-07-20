@@ -1,35 +1,15 @@
-const express = require("express");
+const express =require('express');
 const app = express();
+const path = require('path')
 
-const userModel = require("./usermodel");
 
-app.get("/", (req, res) => {
-  res.send("hey");
-});
+app.set('view engine',"ejs")
+app.use(express.json());
+app.use(express.urlencoded({extended:true}))
+app.use(express.static(path.join(__dirname,"public")));
 
-app.get("/create", async (req, res) => {
-  let createduser = await userModel.create({
-    name: "Tushar",
-    email: "Tushar@gmail.com",
-    username: "tushar",
-  });
-
-  res.send(createduser);
-});
-
-app.get("/update", async (req, res) => {
- let updateUser = await userModel.findOneAndUpdate({username:"tushar"},{name:"Tushar Sawant"},{new:true})
-  res.send(updateUser);
-});
-
-app.get("/read", async (req, res) => {
- let users = await userModel.find({username:'tushar'});
-  res.send(users);
-});
-
-app.get("/delete", async (req, res) => {
- let users = await userModel.findOneAndDelete({name:'Tushar'});
-  res.send(users);
-});
+app.get('/',(req,res)=>{
+    res.send('Hello World') 
+})
 
 app.listen(3000);
